@@ -40,3 +40,23 @@ app.post('/canciones', (req, res) => {
     res.status(500).json({message: 'El recurso no está disponible'})
   }
 });
+
+//Actualizar un archivo
+app.put('/canciones/:id', (req, res) => {
+  const id = req.params.id;
+  const canciones = JSON.parse(fs.readFileSync('canciones.json','utf-8'));
+  const nuevoArray = canciones.map((cancion) => {
+    if (cancion.id == id) {
+      return {
+        ...cancion,
+        titulo: req.body.titulo,
+        artista: req.body.artista,
+        tono: req.body.tono
+      }
+    } else {
+      return cancion;
+    }
+  });
+  fs.writeFileSync('canciones.json', JSON.stringify(nuevoArray));
+  res.status(200).json({mensaje:'Canción actualizada con éxito', data: nuevoArray});
+})
