@@ -59,4 +59,17 @@ app.put('/canciones/:id', (req, res) => {
   });
   fs.writeFileSync('canciones.json', JSON.stringify(nuevoArray));
   res.status(200).json({mensaje:'Canción actualizada con éxito', data: nuevoArray});
-})
+});
+
+// delete 
+app.delete('/canciones/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const canciones = JSON.parse(fs.readFileSync('canciones.json','utf-8'));
+    const updatedCanciones = canciones.filter(cancion => cancion.id != id);
+    fs.writeFileSync('canciones.json', JSON.stringify(updatedCanciones));
+    res.status(200).send('Canción eliminada con éxito');
+  } catch (error) {
+    res.status(500).json({message: 'El recurso no está disponible'});
+  }
+});
