@@ -66,7 +66,7 @@ app.delete('/canciones/:id', (req, res) => {
   try {
     const id = req.params.id;
     const canciones = JSON.parse(fs.readFileSync('canciones.json','utf-8'));
-    const updatedCanciones = canciones.filter(cancion => cancion.id != id);
+    const updatedCanciones = canciones.filter(cancion => cancion.id !== id);
     fs.writeFileSync('canciones.json', JSON.stringify(updatedCanciones));
     res.status(200).send('Canción eliminada con éxito');
   } catch (error) {
